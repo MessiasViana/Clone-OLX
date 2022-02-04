@@ -15,7 +15,7 @@ const apiFetchPost = async (endpoint, body) => {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'appication/json'
+            'Content-Type': 'application/json'
         },
         body:JSON.stringify(body)
     });
@@ -29,7 +29,7 @@ const apiFetchPost = async (endpoint, body) => {
     return json;
 }
 
-const apiFetchGet = async (endpoint, body) => {
+const apiFetchGet = async (endpoint, body = []) => {
     if(!body.token) {
         let token = Cookies.get('token')
         if(token) {
@@ -51,10 +51,25 @@ const apiFetchGet = async (endpoint, body) => {
 const OlxAPI = {
     login:async (email, password) => {
         const json = await apiFetchPost(
-            'user/login',
+            '/user/signin',
             {email, password}
         );
         return json;
+    },
+
+    register:async (name, email, password, stateLoc) => {
+        const json = await apiFetchPost(
+            '/user/signup',
+            {name, email, password, state:stateLoc}
+        );
+        return json;
+    },
+
+    getStates:async () => {
+        const json = await apiFetchGet(
+            '/states'
+        );
+        return json.states;
     }
 };
 
