@@ -10,24 +10,24 @@ const Page = () => {
     const api = useAPI();
 
     const [name, setName] = useState('');
-    const [stateLoc, setStateLoc] =useState('');
+    const [stateLoc, setStateLoc] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmpassword] = useState(false);
+    const [confirmPassword, setConfirmPassword] = useState('');
 
-    const [stateList, setStateList] = useState( [] );
+    const [stateList, setStateList] = useState([]);
 
     const [disabled, setDisabled] = useState(false);
     const [error, setError] = useState('');
 
-    useEffect(()=> {
+    useEffect(()=>{
         const getStates = async () => {
             const slist = await api.getStates();
             setStateList(slist);
         }
         getStates();
     }, []);
-
+        
     const handleSubmit = async (e) => {
         e.preventDefault();
         setDisabled(true);
@@ -35,6 +35,7 @@ const Page = () => {
 
         if(password !== confirmPassword) {
             setError('Senhas não batem');
+            setDisabled(false);
             return;
         }
 
@@ -77,7 +78,7 @@ const Page = () => {
                             <select value={stateLoc} onChange={e=>setStateLoc(e.target.value)} required>
                                 <option></option>
                                 {stateList.map((i, k)=>
-                                        <option key={k} value={i.id}>{i.name}</option>
+                                        <option key={k} value={i._id}>{i.name}</option>
                                     )}
                             </select>
                         </div>
@@ -110,7 +111,7 @@ const Page = () => {
                             <input type="password" 
                             disabled={disabled}
                             value={confirmPassword}
-                            onChange={e=>setConfirmpassword(e.target.value)}
+                            onChange={e=>setConfirmPassword(e.target.value)}
                             required
                             />
                         </div>
