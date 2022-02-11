@@ -4,13 +4,14 @@ import { PageArea, SearchArea } from './styled';
 import useAPI from '../../helpers/OlxAPI';
 
 import { PageContainer } from "../../components/MainComponents";
-
+import AdItem from "../../components/partials/AdItem";
 
 const Page = () => {
     const api = useAPI();
 
     const [stateList, setStateList] = useState( [] );
     const [categories, setCategories] = useState( [] );
+    const [adList, setAdList] = useState( [] );
 
     useEffect(()=>{
         const getStates = async () => {
@@ -26,6 +27,17 @@ const Page = () => {
             setCategories(cats);
         }
         getCategories();
+    }, []);
+
+    useEffect(()=>{
+        const getRecentAds = async () => {
+            const json = await api.getAds({
+                sort:'desc',
+                limit:8
+            });
+            setAdList(json.ads);
+        }
+        getRecentAds();
     }, []);
 
     return (
@@ -55,8 +67,18 @@ const Page = () => {
                     </div>
                 </PageContainer>
                 <PageContainer>
-                <PageArea>
-                        
+                    <PageArea>
+                        <h2>Anúncios Recentes</h2>
+                        <div className="list">
+                            {adList.map((i,k)=>
+                                <AdItem key={k} data={i} />
+                            )}
+                        </div>
+                        <Link to="ads" className="seeAllLink">Ver todos</Link>
+
+                        <hr />
+
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse accumsan ipsum sit amet justo dapibus, eu placerat neque elementum. Praesent libero lacus, feugiat at lacus in, dignissim pulvinar nibh. Quisque sodales lectus in libero pellentesque, nec iaculis mi consectetur. Sed tincidunt efficitur luctus. Nam at sem fermentum, tincidunt lorem in, interdum metus. Mauris pharetra aliquam nibh sit amet imperdiet. Nulla facilisi. Nullam scelerisque nisi lectus, non ullamcorper magna fringilla ac.
                     </PageArea>
                 </PageContainer>
             </SearchArea>

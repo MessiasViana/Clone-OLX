@@ -6,7 +6,8 @@ import Home from './pages/Home';
 import About from './pages/About';
 import NotFound from './pages/NotFound';
 import Login from './pages/Login';
-import SignUp from './pages/SignUp'
+import SignUp from './pages/SignUp';
+import AdPage from './pages/AdPage';
 
 
 
@@ -17,6 +18,7 @@ const PageRoutes = () => {
             <Route path="/sobre" element={<About />}/>
             <Route path="/login" element={<Login />}/>
             <Route path="/cadastro" element={<SignUp />}/>
+            <Route path="/ad/:id" element={<AdPage />}/>
             <Route path="*" element={<NotFound />}/>
         </Routes>
     );
