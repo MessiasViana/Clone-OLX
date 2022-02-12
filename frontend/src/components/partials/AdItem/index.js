@@ -11,7 +11,7 @@ export default (props) => {
         price = `R$ ${props.data.price}`
     }
     return (
-        <Item className="aditem">
+        <Item className="aditem"> 
             <Link to={`/ad/${props.data.id}`}>
                 <div className="itemImage">
                     <img src={props.data.image} alt="" />

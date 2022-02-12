@@ -11,6 +11,8 @@ export const Item = styled.div`
         color:#000;
         background-color:#FFF;
         transition:all ease .2s;
+        min-height:250px;
+        min-height:350px;
 
         &:hover {
             background-color:#EEE;
