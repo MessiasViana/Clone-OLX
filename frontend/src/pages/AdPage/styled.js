@@ -94,21 +94,6 @@ export const PageArea = styled.div`
 
 `
 
-export const OthersArea = styled.div`
-    h2 {
-        font-size:20px;
-    }
-
-    .list {
-        display:flex;
-        flex-wrap:wrap;
-
-        .aditem {
-            width:25%;
-        }
-    }
-`
-
 export const BreadCrumb = styled.div`
     font-size:13px;
     margin-top:20px;

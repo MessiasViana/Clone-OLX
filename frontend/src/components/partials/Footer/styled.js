@@ -4,7 +4,6 @@ import styled from "styled-components";
 export const FooterArea = styled.div`
     height: 100px;
     display:flex;
-    
     justify-content:center;
     align-itens:center;
     text-align:center;

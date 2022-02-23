@@ -10,7 +10,7 @@ import { PageContainer, PageTitle, ErrorMessage } from "../../components/MainCom
 
 const Page = () => {
     const api = useAPI();
-    const fileField = useRef();
+    const images = useRef();
     const navigate = useNavigate();
 
     const [categories, setCategories] = useState([]);
@@ -20,6 +20,8 @@ const Page = () => {
     const [price, setPrice]= useState('');
     const [priceNegotiable, setPriceNegotiable]= useState(false);
     const [desc, setDesc]= useState('');
+
+    const [status, setStatus] = useState(false);
 
     const [disabled, setDisabled] = useState(false);
     const [error, setError] = useState('');
@@ -36,45 +38,16 @@ const Page = () => {
         e.preventDefault();
         setDisabled(true);
         setError('');
-        let errors = [];
 
-        if(!title.trim()) {
-            errors.push('Sem título');
-        }
+        const json = await api.UpdateAd({title, category, price, status, priceNegotiable, desc, images});
 
-        if(!category) {
-            errors.push('Sem categoria');
-        }
-
-        if(errors.length === 0) {
-            const fData = new FormData();
-            fData.append('title', title);
-            fData.append('price', price);
-            fData.append('priceneg', priceNegotiable);
-            fData.append('desc', desc);
-            fData.append('cat', category);
-
-            if(fileField.current.files.length > 0) {
-                for(let i=0;i<fileField.current.files.length;i++) {
-                    fData.append('img', fileField.current.files[i]);
-                }
-            }
-
-            const json = await api.addAd(fData);
-
-            if(!json.error) {
-                navigate(`/ad/${json.id}`);
-                return;
-            } else {
-                setError(json.error);
-            }
-
+        if(json.error) {
+            setError(json.error);
         } else {
-            setError(errors.join("\n"));
+            window.location.href = '/minha-conta';
         }
 
         setDisabled(false);
-        
     }
 
     const priceMask = createNumberMask({
@@ -87,7 +60,7 @@ const Page = () => {
 
     return (
         <PageContainer>
-            <PageTitle>Postar um anúncio</PageTitle>
+            <PageTitle>Atualizar anúncio</PageTitle>
             <PageArea>
                 {error &&
                     <ErrorMessage>{error}</ErrorMessage>
@@ -101,7 +74,6 @@ const Page = () => {
                             disabled={disabled}
                             value={title}
                             onChange={e=>setTitle(e.target.value)}
-                            required
                             />
                         </div>
                     </label>
@@ -110,8 +82,7 @@ const Page = () => {
                         <div className="area-input">
                             <select
                                 disabled={disabled}
-                                onChange={e=>setCategory(e.target.value)}
-                                required                           
+                                onChange={e=>setCategory(e.target.value)}                           
                                 >
                                     <option></option>
                                     {categories && categories.map(i=>
@@ -159,15 +130,26 @@ const Page = () => {
                             <input 
                                 type="file"
                                 disabled={disabled}
-                                ref={fileField}
+                                ref={images}
                                 multiple
+                            />
+                        </div>
+                    </label>
+                    <label className="area">
+                        <div className="area-title">Desativar anúncio</div>
+                        <div className="area-check">
+                            <input 
+                            type="checkbox"
+                            disabled={disabled}
+                            checked={status}
+                            onChange={e=>setStatus(!status)}
                             />
                         </div>
                     </label>
                     <label className="area">
                         <div className="area-title"></div>
                         <div className="area-input">
-                            <button disabled={disabled}>Adicionar Anúncio</button>
+                            <button disabled={disabled}>Atualizar anúncio</button>
                         </div>
                     </label>
                 </form>

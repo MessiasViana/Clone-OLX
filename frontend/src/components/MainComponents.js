@@ -20,3 +20,18 @@ export const ErrorMessage = styled.div`
     color:#000;
     border:2px solid #FF0000;
 `;
+
+export const OthersArea = styled.div`
+    h2 {
+        font-size:20px;
+    }
+
+    .list {
+        display:flex;
+        flex-wrap:wrap;
+
+        .aditem {
+            width:25%;
+        }
+    }
+`

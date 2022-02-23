@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
-import { PageArea, Fake, OthersArea, BreadCrumb } from './styled';
+import { PageArea, Fake, BreadCrumb } from './styled';
 import useAPI from '../../helpers/OlxAPI';
 
 
-import { PageContainer } from "../../components/MainComponents";
+import { PageContainer, OthersArea } from "../../components/MainComponents";
 import AdItem from '../../components/partials/AdItem';
 
 const Page = () => {
@@ -118,7 +118,7 @@ const Page = () => {
                             <h2>Outras ofertas do vendedor</h2>
                             <div className="list">
                                 {adInfo.others.map((i,k)=>
-                                    <AdItem key={k} data={i} width={25}/>
+                                    <AdItem key={k} data={i} width={25} />
                                 )}
                             </div>
                         </>

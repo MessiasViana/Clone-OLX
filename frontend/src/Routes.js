@@ -10,6 +10,8 @@ import SignUp from './pages/SignUp';
 import AdPage from './pages/AdPage';
 import AddAd from './pages/AddAd';
 import Ads from './pages/Ads';
+import MyAccount from './pages/MyAccount';
+import UpdateAd from './pages/UpdateAd';
 
 
 const PageRoutes = () => {
@@ -22,6 +24,8 @@ const PageRoutes = () => {
             <Route path="/ad/:id" element={<AdPage />}/>
             <Route path="/post-an-ad" element={<RequireAuth private> <AddAd /> </RequireAuth>}/>
             <Route path="/ads" element={<Ads />}/>
+            <Route path="/minha-conta" element={<MyAccount />}/>
+            <Route path="/atualizar-ad/:id" element={<UpdateAd />}/>
             <Route path="*" element={<NotFound />}/>
         </Routes>
     );
