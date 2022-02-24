@@ -52,6 +52,7 @@ const Page = () => {
             }
             <hr />
             <PageArea>
+                
                 <div className="leftSide">
                     <div className="box">
                         <div className="adImage">

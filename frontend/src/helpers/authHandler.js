@@ -10,6 +10,7 @@ export const doLogin = (token, rememberPassword = false) => {
         Cookies.set('token', token, {expires:999});
     } else {
         Cookies.set('token', token);
+        Cookies.remove('token');
     }
 }
 

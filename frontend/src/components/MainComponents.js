@@ -34,4 +34,16 @@ export const OthersArea = styled.div`
             width:25%;
         }
     }
+
+    @media (max-width:600px) {
+        margin:10px;
+
+        .list .aditem {
+            width:50%;
+        }
+
+        .list a {
+            min-height:250px;
+        }
+    }
 `

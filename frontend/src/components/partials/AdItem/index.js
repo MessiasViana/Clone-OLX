@@ -27,9 +27,11 @@ export default (props) => {
                 <div className="accountAd">
                     <div className="itemImage">
                         
-                        { props.data.images && props.data.images.map((image, k)=> 
+                        { props.data.images && props.data.images.map((image, k) => 
                             <> 
-                                <img key={k} src={`http://alunos.b7web.com.br:501/media/${image.url}`} alt="" /> 
+                                {image.default &&
+                                    <img key={k} src={`http://alunos.b7web.com.br:501/media/${image.url}`} alt="" />
+                                }
                             </>
                         )}
                     </div>

@@ -29,7 +29,7 @@ const apiFetchPost = async (endpoint, body) => {
     return json;
 }
 
-const apiFetchGet = async (endpoint, body = []) => {
+const apiFetchGet = async (endpoint, body = [])=> {
     if(!body.token) {
         let token = Cookies.get('token')
         if(token) {
@@ -165,10 +165,10 @@ const OlxAPI = {
         return json;
     },
 
-    UpdateAd:async (status, title, category, price, priceNegotiable, desc, images) => {
-        const json = await apiFetchPost(
-            '/ad/:id',
-            title, category, price, status, priceNegotiable, desc, images
+    updateAd: async (formData, idAd) => {
+        const json = await apiFetchFile(
+          `/ad/${idAd}`,
+          formData
         );
         return json;
     }

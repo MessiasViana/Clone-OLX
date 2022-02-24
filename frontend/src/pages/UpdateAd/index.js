@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PageArea } from './styled';
 import useAPI from '../../helpers/OlxAPI';
 import MaskedInput from 'react-text-mask';
@@ -9,8 +9,9 @@ import { PageContainer, PageTitle, ErrorMessage } from "../../components/MainCom
 
 
 const Page = () => {
+    const {id} = useParams();
     const api = useAPI();
-    const images = useRef();
+    const fileField = useRef();
     const navigate = useNavigate();
 
     const [categories, setCategories] = useState([]);
@@ -20,12 +21,14 @@ const Page = () => {
     const [price, setPrice]= useState('');
     const [priceNegotiable, setPriceNegotiable]= useState(false);
     const [desc, setDesc]= useState('');
-
     const [status, setStatus] = useState(false);
 
     const [disabled, setDisabled] = useState(false);
     const [error, setError] = useState('');
 
+    const [adInfo, setAdInfo] = useState( {} );
+
+    
     useEffect(()=>{
         const getCategories = async () => {
             const cats = await api.getCategories();
@@ -34,20 +37,52 @@ const Page = () => {
         getCategories();
     }, []);
 
+    useEffect(()=>{
+        const getAdInfo = async (id) => {
+            const json = await api.getAd(id, true);
+            setAdInfo(json);
+        }
+        getAdInfo(id);
+    }, []);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setDisabled(true);
         setError('');
+        let errors = [];
+        
+        console.log(adInfo.category._id)
 
-        const json = await api.UpdateAd({title, category, price, status, priceNegotiable, desc, images});
+        if(errors.length === 0) {
+            const fData = new FormData();
+            fData.append('title', title);
+            fData.append('price', price);
+            fData.append('cat', category);
+            fData.append('status', !status);
+            fData.append('priceneg', priceNegotiable);
+            fData.append('desc', desc);
 
-        if(json.error) {
-            setError(json.error);
+            if(fileField.current.files.length > 0) {
+                for(let i=0;i<fileField.current.files.length;i++) {
+                    fData.append('img', fileField.current.files[i]);
+                }
+            }
+            
+            const json = await api.updateAd(fData, id);
+
+            if(!json.error) {
+                navigate(`/minha-conta`);
+                return;
+            } else {
+                setError(json.error);
+            }
+
         } else {
-            window.location.href = '/minha-conta';
+            setError(errors.join("\n"));
         }
 
         setDisabled(false);
+        
     }
 
     const priceMask = createNumberMask({
@@ -69,6 +104,7 @@ const Page = () => {
                 <form onSubmit={handleSubmit}>
                     <label className="area">
                         <div className="area-title">Titulo</div>
+                        
                         <div className="area-input">
                             <input type="text" 
                             disabled={disabled}
@@ -130,7 +166,7 @@ const Page = () => {
                             <input 
                                 type="file"
                                 disabled={disabled}
-                                ref={images}
+                                ref={fileField}
                                 multiple
                             />
                         </div>
